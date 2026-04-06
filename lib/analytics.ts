@@ -15,8 +15,8 @@ async function track(eventName: string, params: Record<string, unknown>) {
   }
 }
 
-export function trackBookAdded(title: string, author: string, price: number, stock: number) {
-  track("book_added", { title, author, price, stock });
+export function trackBookAdded(title: string, author: string, stock: number) {
+  track("book_added", { title, author, stock });
 }
 
 export function trackBookUpdated(bookId: string, title: string) {

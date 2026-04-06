@@ -6,7 +6,6 @@ export interface Book {
   id: string;
   title: string;
   author: string;
-  price: number;
   stock: number;
 }
 
@@ -31,7 +30,6 @@ export default function BookTable({ books, onEdit, onDelete }: BookTableProps) {
           <tr className="bg-gray-50 border-b border-gray-200">
             <th className="text-left px-8 py-5 text-base font-semibold text-gray-500">タイトル</th>
             <th className="text-left px-8 py-5 text-base font-semibold text-gray-500">著者</th>
-            <th className="text-right px-8 py-5 text-base font-semibold text-gray-500">価格</th>
             <th className="text-right px-8 py-5 text-base font-semibold text-gray-500">在庫数</th>
             <th className="text-right px-8 py-5 text-base font-semibold text-gray-500">操作</th>
           </tr>
@@ -39,7 +37,7 @@ export default function BookTable({ books, onEdit, onDelete }: BookTableProps) {
         <tbody>
           {books.length === 0 ? (
             <tr>
-              <td colSpan={5} className="px-8 py-20 text-center text-gray-400 text-lg">
+              <td colSpan={4} className="px-8 py-20 text-center text-gray-400 text-lg">
                 書籍がまだ登録されていません
               </td>
             </tr>
@@ -51,9 +49,6 @@ export default function BookTable({ books, onEdit, onDelete }: BookTableProps) {
               >
                 <td className="px-8 py-6 text-lg font-semibold text-gray-800">{book.title}</td>
                 <td className="px-8 py-6 text-lg text-gray-600">{book.author}</td>
-                <td className="px-8 py-6 text-lg text-gray-800 text-right">
-                  ¥{book.price.toLocaleString()}
-                </td>
                 <td className="px-8 py-6 text-right">
                   <span
                     className={`inline-block px-4 py-1.5 rounded-full text-base font-bold ${
@@ -83,16 +78,16 @@ export default function BookTable({ books, onEdit, onDelete }: BookTableProps) {
                       </button>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-end gap-5">
+                    <div className="flex items-center justify-end gap-4">
                       <button
                         onClick={() => onEdit(book)}
-                        className="text-lg text-blue-500 hover:text-blue-700 font-bold transition-colors"
+                        className="text-base text-blue-500 hover:text-blue-700 font-bold px-5 py-2.5 rounded-xl hover:bg-blue-50 transition-colors"
                       >
                         編集
                       </button>
                       <button
                         onClick={() => setDeletingId(book.id)}
-                        className="text-lg text-red-500 hover:text-red-700 font-bold transition-colors"
+                        className="text-base text-red-500 hover:text-red-700 font-bold px-5 py-2.5 rounded-xl hover:bg-red-50 transition-colors"
                       >
                         削除
                       </button>
