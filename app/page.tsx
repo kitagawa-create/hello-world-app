@@ -1,66 +1,37 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+
+const pages = [
+  { href: "/counter", title: "カウンター", description: "ボタンを押すと数字が増える。リセット機能付き。" },
+  { href: "/darkmode", title: "ダークモード", description: "ライト/ダークモードをボタンで切り替え。" },
+  { href: "/cart", title: "カート", description: "商品の追加・削除・数量変更ができるカート機能。" },
+  { href: "/books", title: "本リスト", description: "本の一覧を表示。在庫ありの本にマーク付き。" },
+];
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div style={{ maxWidth: 700, margin: "0 auto", padding: "3rem 2rem", fontFamily: "sans-serif" }}>
+      <h1 style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>React Demo Site</h1>
+      <p style={{ color: "#666", marginBottom: "2rem" }}>useStateを使ったReact機能デモ集</p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        {pages.map((page) => (
+          <Link
+            key={page.href}
+            href={page.href}
+            style={{
+              padding: "1.5rem",
+              border: "1px solid #ddd",
+              borderRadius: 10,
+              textDecoration: "none",
+              color: "inherit",
+              transition: "border-color 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={undefined}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <h2 style={{ margin: "0 0 0.5rem", fontSize: "1.3rem" }}>{page.title}</h2>
+            <p style={{ margin: 0, color: "#666", fontSize: "0.9rem" }}>{page.description}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
