@@ -4,3 +4,19 @@ runConfig:
   memoryMiB: 512
   minInstances: 0
   maxInstances: 2
+
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyBS5DBczxFo7UEtypcPynsccNE6jXpvux4
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: hello-world-app-kt.firebaseapp.com
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: hello-world-app-kt
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: hello-world-app-kt.firebasestorage.app
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "366764671868"
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "1:366764671868:web:6133e723781ef3daeddaf9"
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    value: G-GLWX67620F
