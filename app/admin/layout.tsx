@@ -3,6 +3,8 @@
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
+import Sidebar from "@/components/admin/Sidebar";
+import Header from "@/components/admin/Header";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const { user, loading, signOut } = useAuth();
@@ -14,10 +16,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     }
   }, [user, loading, router]);
 
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/login");
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <p className="text-gray-400">読み込み中...</p>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f3f4f6" }}>
+        <p style={{ color: "#9ca3af", fontSize: "16px" }}>読み込み中...</p>
       </div>
     );
   }
@@ -25,37 +32,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      {/* サイドバー */}
-      <aside className="w-72 shrink-0 bg-slate-900 text-white flex flex-col justify-between px-6 py-8">
-        <div>
-          <a href="/admin/books" className="flex items-center gap-3 mb-12">
-            <div className="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center">
-              <span className="text-2xl">📚</span>
-            </div>
-            <div>
-              <p className="text-xl font-bold leading-tight">BookShelf</p>
-              <p className="text-xs text-slate-400 mt-0.5">書籍管理システム</p>
-            </div>
-          </a>
-        </div>
+    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#f3f4f6" }}>
+      {/* Sidebar - fixed */}
+      <Sidebar onLogout={handleLogout} />
 
-        <div className="border-t border-slate-700 pt-6">
-          <p className="text-xs text-slate-500 truncate mb-3 px-1">{user.email}</p>
-          <button
-            onClick={async () => {
-              await signOut();
-              router.push("/login");
-            }}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-base text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-          >
-            🚪 ログアウト
-          </button>
-        </div>
-      </aside>
-
-      {/* メインコンテンツ */}
-      <main className="flex-1 min-w-0 p-10 overflow-y-auto">{children}</main>
+      {/* Main area - offset by sidebar width */}
+      <div style={{ marginLeft: "256px", flex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <Header />
+        <main style={{ flex: 1 }}>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
