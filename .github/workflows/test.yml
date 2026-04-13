@@ -1,4 +1,11 @@
-name: Test
+# push / PR のたびにテストを実行する CI ワークフロー
+#
+# ジョブ構成:
+#   1. unit-integration: 型チェック → ユニット/結合テスト (Jest)
+#   2. e2e: E2Eテスト (Playwright + Chromium)
+#   3. build: 本番ビルドが通ることを確認
+
+name: CI
 
 on:
   push:
@@ -7,21 +14,96 @@ on:
     branches: ["**"]
 
 jobs:
-  test:
+  # ── 1. 型チェック + ユニット/結合テスト ──
+  unit-integration:
+    name: 型チェック + ユニット/結合テスト
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: コードをチェックアウト
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Node.js をセットアップ
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
-      - name: Install dependencies
+      - name: 依存パッケージをインストール
         run: npm ci
 
-      - name: Run tests
+      - name: 型チェック
+        run: npx tsc --noEmit
+
+      - name: ユニット/結合テスト (Jest)
         run: npm test
+
+  # ── 2. E2Eテスト ──
+  e2e:
+    name: E2Eテスト
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.js をセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 依存パッケージをインストール
+        run: npm ci
+
+      - name: Playwright ブラウザをインストール
+        run: npx playwright install chromium --with-deps
+
+      - name: E2Eテスト (Playwright)
+        run: npm run test:e2e
+        env:
+          # Firebase 接続に必要（アプリ起動時に使用）
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          # テスト用ログイン情報
+          E2E_EMAIL: ${{ secrets.E2E_EMAIL }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+
+      - name: テスト結果をアップロード
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: test-results/
+          retention-days: 7
+
+  # ── 3. ビルド確認 ──
+  build:
+    name: ビルド確認
+    runs-on: ubuntu-latest
+    needs: unit-integration
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.js をセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 依存パッケージをインストール
+        run: npm ci
+
+      - name: ビルド
+        run: npm run build
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
