@@ -1,123 +1,34 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "About | BookShelf",
-  description: "BookShelf について",
-};
-
 export default function AboutPage() {
   return (
-    <main
-      style={{
-        maxWidth: "720px",
-        margin: "60px auto",
-        padding: "40px 32px",
-        fontFamily: "system-ui, sans-serif",
-        backgroundColor: "#ffffff",
-        borderRadius: "16px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-        border: "1px solid #e5e7eb",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "32px",
-          fontWeight: 800,
-          color: "#111827",
-          margin: 0,
-        }}
-      >
-        About BookShelf
-      </h1>
-      <p
-        style={{
-          fontSize: "14px",
-          color: "#6b7280",
-          marginTop: "8px",
-        }}
-      >
-        書籍貸出管理システム
-      </p>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+      <div style={{ maxWidth: "480px", width: "100%", backgroundColor: "#ffffff", borderRadius: "16px", padding: "40px", border: "1px solid #e5e7eb", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: 800, color: "#111827", margin: 0 }}>BookShelf</h1>
+        <p style={{ fontSize: "14px", color: "#6b7280", marginTop: "8px" }}>書籍貸出管理アプリケーション</p>
 
-      <section style={{ marginTop: "32px" }}>
-        <h2
-          style={{
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "#111827",
-            margin: 0,
-          }}
-        >
-          BookShelf とは
-        </h2>
-        <p
-          style={{
-            fontSize: "15px",
-            lineHeight: 1.7,
-            color: "#374151",
-            marginTop: "12px",
-          }}
-        >
-          BookShelf は、図書館や社内文庫向けに設計された書籍貸出管理システムです。
-          書籍の登録・貸出・返却・利用統計まで、運営に必要な機能を1つのダッシュボードで提供します。
-        </p>
-      </section>
+        <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div>
+            <p style={{ fontSize: "13px", fontWeight: 600, color: "#374151" }}>バージョン</p>
+            <p style={{ fontSize: "14px", color: "#6b7280" }}>0.1.0</p>
+          </div>
+          <div>
+            <p style={{ fontSize: "13px", fontWeight: 600, color: "#374151" }}>技術スタック</p>
+            <p style={{ fontSize: "14px", color: "#6b7280" }}>Next.js / Firebase / Tailwind CSS</p>
+          </div>
+          <div>
+            <p style={{ fontSize: "13px", fontWeight: 600, color: "#374151" }}>概要</p>
+            <p style={{ fontSize: "14px", color: "#6b7280", lineHeight: 1.6 }}>
+              書籍の登録・貸出・返却を管理するためのアプリです。ダッシュボードで統計情報を確認し、書籍管理と貸出管理を行えます。
+            </p>
+          </div>
+        </div>
 
-      <section style={{ marginTop: "28px" }}>
-        <h2
-          style={{
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "#111827",
-            margin: 0,
-          }}
+        <a
+          href="/admin"
+          style={{ display: "inline-block", marginTop: "28px", fontSize: "14px", fontWeight: 600, color: "#2f5df5", textDecoration: "none" }}
         >
-          主な機能
-        </h2>
-        <ul
-          style={{
-            fontSize: "15px",
-            lineHeight: 1.9,
-            color: "#374151",
-            marginTop: "12px",
-            paddingLeft: "20px",
-          }}
-        >
-          <li>📚 書籍の登録・編集・削除</li>
-          <li>🔄 貸出と返却の管理</li>
-          <li>📊 カテゴリ別・著者別の集計ダッシュボード</li>
-          <li>👥 利用者ごとの貸出履歴</li>
-          <li>🔔 Slack 通知連携</li>
-        </ul>
-      </section>
-
-      <section style={{ marginTop: "28px" }}>
-        <h2
-          style={{
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "#111827",
-            margin: 0,
-          }}
-        >
-          技術スタック
-        </h2>
-        <ul
-          style={{
-            fontSize: "15px",
-            lineHeight: 1.9,
-            color: "#374151",
-            marginTop: "12px",
-            paddingLeft: "20px",
-          }}
-        >
-          <li>Next.js (App Router)</li>
-          <li>React</li>
-          <li>TypeScript</li>
-          <li>Firebase / Firestore</li>
-          <li>Sentry(エラー監視)</li>
-        </ul>
-      </section>
-    </main>
+          管理画面に戻る
+        </a>
+      </div>
+    </div>
   );
 }
